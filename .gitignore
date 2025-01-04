@@ -1,0 +1,21 @@
+# Node.js
+node_modules/
+*.env
+npm-debug.log
+package-lock.json
+
+# Django
+*.pyc
+__pycache__/
+db.sqlite3
+*.log
+.env
+
+# VS Code
+.vscode/
+.idea/
+
+# System Files
+.DS_Store
+*.swp
+*.swo
