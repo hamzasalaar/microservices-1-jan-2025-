@@ -4,8 +4,27 @@ from rest_framework.exceptions import AuthenticationFailed
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
-def render_user_page(request):
+# Static data simulating courses
+COURSES = [
+    {"name": "Introduction to Programming", "description": "Learn the basics of programming with Python."},
+    {"name": "Web Development with Django", "description": "Master web development using Django framework."},
+    {"name": "Data Science with Python", "description": "Learn data analysis and visualization with Python."},
+    {"name": "Machine Learning Fundamentals", "description": "Understand the basics of machine learning."},
+]
+
+@login_required
+def fetch_courses(request):
+    try:
+        # Render the HTML template with the course data
+        context = {'courses': COURSES}
+        return render(request, 'courses.html', context)
+    
+    except Exception as e:
+        return HttpResponse(f"Error: {str(e)}", status=500)
+
+def render_page(request):
     token = request.headers.get('Authorization')
     
     if not token:
@@ -29,8 +48,8 @@ def render_user_page(request):
             'email': payload.get('email'),
         }
 
-        # Render HTML template with user data
-        return render(request, 'dashboard.html', {'user': user})
+        # Render HTML template with user data and courses
+        return render(request, 'dashboard.html', {'user': user, 'courses': COURSES})
 
     except jwt.ExpiredSignatureError:
         return HttpResponse("Token expired", status=401)
@@ -38,18 +57,4 @@ def render_user_page(request):
         return HttpResponse("Invalid token", status=401)
     except Exception as e:
         return HttpResponse(str(e), status=400)
-
-    #     # Return JSON response for React frontend
-    #     return JsonResponse({
-    #         'message': 'You are authenticated!',
-    #         'user': user,
-    #     })
-
-    # except jwt.ExpiredSignatureError:
-    #     return JsonResponse({'error': 'Token expired'}, status=401)
-    # except jwt.InvalidTokenError:
-    #     return JsonResponse({'error': 'Invalid token'}, status=401)
-    # except AuthenticationFailed as e:
-    #     return JsonResponse({'error': str(e)}, status=401)
-    # except Exception as e:
-    #     return JsonResponse({'error': str(e)}, status=400)
+    

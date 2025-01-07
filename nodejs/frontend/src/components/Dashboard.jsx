@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate from react-router-dom
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
     const [html, setHtml] = useState('');
+    const [user, setUser] = useState(null);  // State to store user data
     const [error, setError] = useState('');
     const navigate = useNavigate();  // Use useNavigate for redirection
 
@@ -11,11 +12,12 @@ const Dashboard = () => {
             const token = localStorage.getItem('token');
             if (!token) {
                 alert('Unauthorized. Please log in.');
-                window.location.href = '/login';
+                navigate('/login');
                 return;
             }
 
             try {
+                // Fetch initial HTML content from the Django backend
                 const response = await fetch('http://127.0.0.1:8000/render-page/', {
                     method: 'GET',
                     headers: {
@@ -24,7 +26,7 @@ const Dashboard = () => {
                 });
 
                 if (!response.ok) {
-                    throw new Error('Failed to fetch page');
+                    throw new Error('Failed to fetch courses');
                 }
 
                 const htmlData = await response.text();
@@ -35,7 +37,35 @@ const Dashboard = () => {
         };
 
         fetchDashboard();
-    }, []);
+    }, [navigate]);
+
+    const fetchCourses = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('Unauthorized. Please log in.');
+            navigate('/login');
+            return;
+        }
+
+        try {
+            // Fetch courses from Django backend upon button click
+            const response = await fetch('http://127.0.0.1:8000/fetch-courses/', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch courses');
+            }
+
+            const htmlData = await response.text();
+            setHtml(htmlData);  // Store the HTML response in state
+        } catch (err) {
+            setError(err.message || 'Failed to fetch courses');
+        }
+    };
 
     const handleLogout = () => {
         // Remove the token from localStorage
@@ -49,20 +79,21 @@ const Dashboard = () => {
     }
 
     if (!html) {
-        return <div>Loading...</div>;
+        return <div>Loading courses...</div>;
     }
 
-    // Render raw HTML from Django directly into React
     return (
         <div>
-            {/* Render raw HTML from Django directly into React */}
-            <div dangerouslySetInnerHTML={{ __html: html }} />
-
-            {/* Logout button */}
+            {/* Logout Button */}
             <button onClick={handleLogout}>Logout</button>
+
+            {/* Button to fetch courses */}
+            <button onClick={fetchCourses}>Fetch Courses</button>
+
+            {/* Render HTML content from Django */}
+            <div dangerouslySetInnerHTML={{ __html: html }} />
         </div>
     );
-
 };
 
 export default Dashboard;

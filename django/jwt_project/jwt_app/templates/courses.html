@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Courses</title>
+</head>
+<body>
+    <h2>Available Courses</h2>
+    <ul>
+        {% for course in courses %}
+            <li>
+                <strong>{{ course.name }}</strong>: {{ course.description }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

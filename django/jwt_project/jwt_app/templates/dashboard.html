@@ -4,90 +4,147 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Dashboard</title>
-
     <style>
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Arial", sans-serif;
         background-color: #f4f7fc;
         margin: 0;
         padding: 0;
+        color: #333;
       }
 
       .container {
-        max-width: 800px;
-        margin: 50px auto;
-        padding: 30px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      }
-
-      h1 {
-        font-size: 2.5em;
-        color: #333;
-        text-align: center;
-      }
-
-      h2 {
-        font-size: 1.5em;
-        color: #555;
-        text-align: center;
-      }
-
-      .user-info {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
         padding: 20px;
-        background-color: #f9f9f9;
+      }
+
+      .header {
+        text-align: center;
+        padding: 20px 0;
+        background-color: #4caf50;
+        color: white;
         border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       }
 
-      .user-info div {
-        flex: 1;
-        padding: 10px;
-        text-align: center;
+      .header h1,
+      .header h2 {
+        margin: 0;
       }
 
-      .user-info div h3 {
-        font-size: 1.2em;
-        color: #444;
+      .course-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        padding-top: 30px;
       }
 
-      .user-info div p {
-        font-size: 1em;
-        color: #777;
+      .course {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
       }
 
-      footer {
-        text-align: center;
-        margin-top: 40px;
-        font-size: 1em;
-        color: #888;
+      .course:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .course img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .course-content {
+        padding: 20px;
+      }
+
+      .course h3 {
+        font-size: 1.5rem;
+        color: #4caf50;
+        margin-bottom: 10px;
+      }
+
+      .course p {
+        margin-bottom: 15px;
+        font-size: 1rem;
+        color: #555;
+      }
+
+      .enroll-btn {
+        background-color: #4caf50;
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .enroll-btn:hover {
+        background-color: #45a049;
+      }
+
+      .logout-btn {
+        background-color: #f44336;
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background-color 0.3s ease;
+      }
+
+      .logout-btn:hover {
+        background-color: #e53935;
+      }
+
+      @media (max-width: 768px) {
+        .course-list {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .course-list {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
-
   <body>
     <div class="container">
-      <h1>Welcome and Hello, {{ user.email }}</h1>
-      <h2>You're logged in successfully!</h2>
+      <div class="header">
+        <h1>Welcome, {{ user.email }}</h1>
+        <h2>User ID: {{ user.id }}</h2>
+      </div>
 
-      <div class="user-info">
-        <div>
-          <h3>User ID</h3>
-          <p>{{ user.id }}</p>
+      <button class="logout-btn" onclick="window.location.href='/login'">
+        Logout
+      </button>
+
+      <h2 style="text-align: center; margin-top: 40px">Available Courses</h2>
+      <div class="course-list">
+        {% for course in courses %}
+        <div class="course">
+          <img src="https://via.placeholder.com/300x200" alt="Course Image" />
+          <div class="course-content">
+            <h3>{{ course.title }}</h3>
+            <p>{{ course.description }}</p>
+            <p><strong>Enrollment Fee:</strong> ${{ course.enrollment_fee }}</p>
+            <button class="enroll-btn">Enroll Now</button>
+          </div>
         </div>
-        <div>
-          <h3>Email</h3>
-          <p>{{ user.email }}</p>
-        </div>
+        {% endfor %}
       </div>
     </div>
-
-    <footer>
-      <p>&copy; 2025 Hamza. All rights reserved.</p>
-    </footer>
   </body>
 </html>

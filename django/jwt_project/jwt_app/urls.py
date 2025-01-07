@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import render_user_page
+from .views import render_page, fetch_courses
 
 urlpatterns = [
-    path('render-page/', render_user_page, name='render_user_page'),
+    path('render-page/', render_page, name='render_page'),
+    path('fetch-courses/', fetch_courses, name='render_courses'),
 ]
