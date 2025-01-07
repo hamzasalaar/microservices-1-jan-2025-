@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f7fc;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        font-size: 2.5em;
+        color: #333;
+        text-align: center;
+      }
+
+      h2 {
+        font-size: 1.5em;
+        color: #555;
+        text-align: center;
+      }
+
+      .user-info {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .user-info div {
+        flex: 1;
+        padding: 10px;
+        text-align: center;
+      }
+
+      .user-info div h3 {
+        font-size: 1.2em;
+        color: #444;
+      }
+
+      .user-info div p {
+        font-size: 1em;
+        color: #777;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 1em;
+        color: #888;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Welcome and Hello, {{ user.email }}</h1>
+      <h2>You're logged in successfully!</h2>
+
+      <div class="user-info">
+        <div>
+          <h3>User ID</h3>
+          <p>{{ user.id }}</p>
+        </div>
+        <div>
+          <h3>Email</h3>
+          <p>{{ user.email }}</p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Hamza. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
